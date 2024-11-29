@@ -301,6 +301,7 @@ pub struct PoolOpts {
     abs_conn_ttl: Option<Duration>,
     abs_conn_ttl_jitter: Option<Duration>,
     reset_connection: bool,
+    shutdown_pool_in_recycler: bool,
 }
 
 impl PoolOpts {
@@ -364,6 +365,18 @@ impl PoolOpts {
     /// Returns the `reset_connection` value (see [`PoolOpts::with_reset_connection`]).
     pub fn reset_connection(&self) -> bool {
         self.reset_connection
+    }
+
+    /// Sets whether to shutdown the connection pool in recycler (defaults to `true`).
+    ///
+    pub fn with_shutdown_pool_in_recycler(mut self, shutdown_pool_in_recycler: bool) -> Self {
+        self.shutdown_pool_in_recycler = shutdown_pool_in_recycler;
+        self
+    }
+
+    /// Returns the `reset_connection` value (see [`PoolOpts::with_reset_connection`]).
+    pub fn shutdown_pool_in_recycler(&self) -> bool {
+        self.shutdown_pool_in_recycler
     }
 
     /// Sets an absolute TTL after which a connection is removed from the pool.
@@ -498,6 +511,7 @@ impl Default for PoolOpts {
             abs_conn_ttl: None,
             abs_conn_ttl_jitter: None,
             reset_connection: true,
+            shutdown_pool_in_recycler: true,
         }
     }
 }
